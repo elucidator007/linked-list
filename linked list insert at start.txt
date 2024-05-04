@@ -1,78 +1,132 @@
-#include <iostream>
+class Node:
+    def __init__(self, data=None, next=None):
+        self.data = data
+        self.next = next
 
-using namespace std;
-
-struct node {
-    int data;
-    node* next;
-   
-    node(int data) {
-        this->data = data;
-        next = nullptr;
-    }
-};
-
-class llist {
-    node *head;
-   
-    public:
-   
-    llist() {
-        head = nullptr;
-    }
-   
-    void insertNode(int data) {
-        node *new_data = new node(data);
-       
-        if(head == nullptr) 
-        {
-            head = new_data;
-        }
-        else 
-        {
-            node *temp = head;
-           
-            while (temp->next) 
-            {
-                temp = temp->next;
-            }
-           
-            temp->next = new_data;
-        }
-    }
-   
-    void print() {
-        node *temp = head;
-       
-        while (temp) {
-            cout << temp->data << " ";
-            temp = temp->next;
-        }
-        cout << endl;
-    }
-};
-
-
-
-int main() {
-   
-   
-    llist *ll = new llist();
-   
-    int size, data;
-    cin >> size;
-   
-    for (int i=0; i<size; i++) {
-        cin >> data;
-        ll->insertNode(data);
-    }
-   
-    // ll->insertNode(10);
-    // ll->insertNode(20);
-    // ll->insertNode(30);
-    // ll->insertNode(40);
-   
-    ll->print();
-   
-    return 0;
-}
+class Linked_list:
+    def __init__ (self):
+        self.head = None
+        
+    def insert_at_begin(self, data):
+        node = Node(data, self.head)
+        self.head = node
+    
+    def insert_at_last(self, data):
+        node = Node(data, None)
+        
+        if self.head == None:
+            self.head = node
+            return
+        
+        itr = self.head
+        
+        while itr.next:
+            itr = itr.next
+        
+        itr.next = node
+    
+    def insert_multiple(self, data):
+        for i in data:
+            self.insert_at_last(i)
+    
+    def length(self):
+        count = 0
+        itr = self.head
+        
+        while itr:
+            count += 1
+            itr = itr.next
+        return count
+    
+    def remove_at_index(self, key):
+        if self.length() <= key:
+            print('can not do it')
+            return
+        
+        if key == 0:
+            self.head = self.head.next
+            return
+        
+        itr = self.head
+        count = key - 1
+        while itr and count > 0:
+            count -= 1
+            itr = itr.next
+        
+        itr.next = itr.next.next
+    
+    def kth_element(self, k):
+        if k == 1:
+            print(self.head.data)
+            return
+        
+        itr = self.head
+        while itr and k > 1:
+            k -= 1
+            itr = itr.next
+        
+        print(itr.data)
+        return
+    
+    def reverse(self):
+        prev = None
+        curr = self.head
+        
+        while curr:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        
+        self.head = prev
+    
+    def middle_element(self):
+        itr1 = self.head
+        itr2 = self.head
+        
+        while itr2 and itr2.next:
+            itr1 = itr1.next
+            itr2 = itr2.next.next
+        
+        print(itr1.data)
+    
+    def remove_duplicates_from_sorted(self):
+        if self.head is None or self.head.next is None:
+            return head
+        
+        itr = head
+        
+        while itr.next:
+            if itr.data == itr.next.data:
+                itr.next = itr.next.next
+            else:
+                itr = itr.next
+        return self.head
+    
+    def print(self):
+        if self.head == None:
+            print('empty linked list')
+            return
+        
+        itr = self.head
+        r = ''
+        while itr:
+            r += str(itr.data) + '-->'
+            itr = itr.next
+        print(r)
+    
+if __name__ == '__main__':
+    
+    ll = Linked_list()
+    # ll.insert_at_begin(5)
+    # ll.insert_at_begin(4)
+    # ll.insert_at_begin(3)
+    # ll.insert_at_last(6)
+    ll.insert_multiple([1,2,3,4,5,6])
+    ll.reverse()
+    ll.middle_element()
+    # ll.print()
+    # ll.remove_at_index(0)
+    # print(ll.length())
+    # ll.kth_element(5)
+    ll.print()
